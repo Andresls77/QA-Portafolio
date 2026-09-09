@@ -38,3 +38,24 @@ qa-portfolio/
 ├── 02-manual-testing/         # Casos de prueba (BDD/Tabular) y Bug Reports
 ├── 03-api-testing/            # Colecciones de Postman, scripts de validación y reportes
 └── 04-automation/             # Framework de automatización E2E con POM e integración CI/CD
+
+🚀 Proyectos Destacados
+1. Estrategia y Pruebas Funcionales (Manual Testing)
+Ubicación: /01-test-strategy y /02-manual-testing
+
+Descripción: Planificación de pruebas completa para flujos críticos (registro, autenticación y gestión de entidades). Incluye casos de prueba BDD con sintaxis Gherkin, análisis de valores límite y reportes de errores detallados con logs y datos técnicos.
+
+2. Pruebas de API REST con Postman & Newman
+Ubicación: /03-api-testing
+
+Descripción: Colecciones de Postman organizadas con aserciones automáticas en JavaScript (status codes, tiempo de respuesta, estructura del payload JSON y flujos de error). Ejecutables desde terminal con Newman.
+
+3. Framework de Automatización E2E
+Ubicación: /04-automation
+
+Descripción: Automatización de flujos E2E utilizando el patrón Page Object Model (POM), manejo de variables de entorno y ejecución automatizada en canalizaciones de CI/CD mediante GitHub Actions.
+
+📬 Contacto
+GitHub: Tu Usuario de GitHub
+
+LinkedIn: Tu Perfil de LinkedIn
