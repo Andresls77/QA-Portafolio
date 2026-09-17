@@ -1,1 +1,159 @@
-
+{
+	"info": {
+		"_postman_id": "a1b2c3d4-e5f6-7890-abcd-1234567890ab",
+		"name": "RestfulBooker-API-Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "01 - Authenticate (Get Token)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Token generado y almacenado en variable de entorno\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property(\"token\");",
+							"    pm.environment.set(\"token\", jsonData.token);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"password123\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/auth",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"auth"
+					]
+				}
+			}
+		},
+		{
+			"name": "02 - Create Booking (JSON Schema Test)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"const schema = {",
+							"    \"type\": \"object\",",
+							"    \"properties\": {",
+							"        \"bookingid\": { \"type\": \"number\" },",
+							"        \"booking\": {",
+							"            \"type\": \"object\",",
+							"            \"properties\": {",
+							"                \"firstname\": { \"type\": \"string\" },",
+							"                \"lastname\": { \"type\": \"string\" },",
+							"                \"totalprice\": { \"type\": \"number\" },",
+							"                \"depositpaid\": { \"type\": \"boolean\" }",
+							"            },",
+							"            \"required\": [\"firstname\", \"lastname\", \"totalprice\", \"depositpaid\"]",
+							"        }",
+							"    },",
+							"    \"required\": [\"bookingid\", \"booking\"]",
+							"};",
+							"",
+							"pm.test(\"El payload cumple con el JSON Schema estipulado\", function () {",
+							"    pm.response.to.have.jsonSchema(schema);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"pm.environment.set(\"booking_id\", jsonData.bookingid);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstname\": \"Carlos\",\n    \"lastname\": \"Mendoza\",\n    \"totalprice\": 150,\n    \"depositpaid\": true,\n    \"bookingdates\": {\n        \"checkin\": \"2026-10-01\",\n        \"checkout\": \"2026-10-05\"\n    },\n    \"additionalneeds\": \"Breakfast\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/booking",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"booking"
+					]
+				}
+			}
+		},
+		{
+			"name": "03 - Delete Booking",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201 Created (Deleted)\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"Tiempo de respuesta SLA inferior a 800ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(800);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Cookie",
+						"value": "token={{token}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/booking/{{booking_id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"booking",
+						"{{booking_id}}"
+					]
+				}
+			}
+		}
+	]
+}
