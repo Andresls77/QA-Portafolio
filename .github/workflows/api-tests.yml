@@ -1,0 +1,27 @@
+name: API Regression Suite (Newman)
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request: 
+    branches: [ main, master ]
+jobs:
+  run-api-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del código fuente
+        uses: actions/checkout@v4
+        
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Instalar Newman
+        run: npm install -g newman
+
+      - name: Ejecutar Colección de Postman
+        run: |
+          newman run 03-api-testing/collections/RestfulBooker-API-Collection.postman_collection.json \
+            -e 03-api-testing/environments/RestfulBooker-Staging.postman_environment.json
